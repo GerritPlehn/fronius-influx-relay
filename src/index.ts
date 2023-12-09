@@ -24,13 +24,19 @@ const app = new Elysia()
   .post("/inverterCumulation", ({ body }) =>
     writeInverterCumulation(inverterCumulationSchema.parse(body))
   )
-  .listen(3000)
-  .onStop(async () => {
-    console.log("shutting down");
-    await close();
-  });
+  .listen(3000);
 
 console.log(
   `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
 );
-process.on("beforeExit", () => app.stop());
+
+const gracefulShutdown = async () => {
+  await app.stop();
+  await close();
+  console.log("closed connections");
+  process.exit();
+};
+
+process.on("beforeExit", gracefulShutdown);
+process.on("SIGTERM", gracefulShutdown);
+process.on("SIGINT", gracefulShutdown);
