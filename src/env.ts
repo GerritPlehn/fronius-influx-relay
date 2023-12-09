@@ -6,6 +6,7 @@ const envShape = z.object({
   INFLUX_ORG: z.string().default("default"),
   INFLUX_BUCKET: z.string().default("fronius"),
   RELAY_PORT: z.coerce.number().default(3000),
+  INVERTER_URL: z.string(),
 });
 
 const env = envShape.parse(process.env);
