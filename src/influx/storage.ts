@@ -6,6 +6,10 @@ export const writeStorage = async (rawData: unknown) => {
   const data = storageSchema.parse(rawData);
 
   const storage = data.Body.Data.Controller;
+  if (!storage) {
+    console.warn("No Storage data available");
+    return;
+  }
   const measurementTime = data.Head.Timestamp;
 
   const numericPoints = new Map<string, number | null>();

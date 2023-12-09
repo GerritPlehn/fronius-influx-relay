@@ -22,22 +22,24 @@ const batteryCellStatusSchema = z.number().transform((statusNumber) => {
 export const storageSchema = z.object({
   Body: z.object({
     Data: z.object({
-      Controller: z.object({
-        Capacity_Maximum: z.number(),
-        Current_DC: z.number(),
-        DesignedCapacity: z.number(),
-        Enable: z.number(),
-        StateOfCharge_Relative: z.number(),
-        Status_BatteryCell: batteryCellStatusSchema,
-        Temperature_Cell: z.number(),
-        TimeStamp: z.number(),
-        Voltage_DC: z.number(),
-        Details: z.object({
-          Manufacturer: z.string(),
-          Model: z.string(),
-          Serial: z.string(),
-        }),
-      }),
+      Controller: z
+        .object({
+          Capacity_Maximum: z.number(),
+          Current_DC: z.number(),
+          DesignedCapacity: z.number(),
+          Enable: z.number(),
+          StateOfCharge_Relative: z.number(),
+          Status_BatteryCell: batteryCellStatusSchema,
+          Temperature_Cell: z.number(),
+          TimeStamp: z.number(),
+          Voltage_DC: z.number(),
+          Details: z.object({
+            Manufacturer: z.string(),
+            Model: z.string(),
+            Serial: z.string(),
+          }),
+        })
+        .optional(),
     }),
   }),
   Head: z.object({
