@@ -18,9 +18,7 @@ export const writeInverterCumulation = async (rawData: unknown) => {
   );
 
   for (const [key, value] of numericPoints.entries()) {
-    if (!value) {
-      continue;
-    }
+    if (value == null) continue;
     influxPoint.floatField(key, value);
   }
 

@@ -74,9 +74,7 @@ export const writeMeter = async (rawData: unknown) => {
   const influxPoint = new Point("Meter").timestamp(measurementTime);
 
   for (const [key, value] of numericPoints.entries()) {
-    if (!value) {
-      continue;
-    }
+    if (value == null) continue;
     influxPoint.floatField(key, value);
   }
 

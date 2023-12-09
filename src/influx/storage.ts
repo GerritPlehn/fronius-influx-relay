@@ -22,9 +22,7 @@ export const writeStorage = async (rawData: unknown) => {
   const influxPoint = new Point("Storage").timestamp(measurementTime);
 
   for (const [key, value] of numericPoints.entries()) {
-    if (!value) {
-      continue;
-    }
+    if (value == null) continue;
     influxPoint.floatField(key, value);
   }
 

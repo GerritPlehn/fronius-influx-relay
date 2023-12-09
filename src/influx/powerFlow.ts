@@ -23,9 +23,7 @@ export const writePowerFlow = async (rawData: unknown) => {
   const influxPoint = new Point("PowerFlow").timestamp(measurementTime);
 
   for (const [key, value] of numericPoints.entries()) {
-    if (!value) {
-      continue;
-    }
+    if (value == null) continue;
     influxPoint.floatField(key, value);
   }
 

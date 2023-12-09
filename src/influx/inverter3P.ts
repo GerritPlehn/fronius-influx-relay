@@ -20,9 +20,7 @@ export const writeInverter3P = async (rawData: unknown) => {
   const influxPoint = new Point("Inverter3P").timestamp(measurementTime);
 
   for (const [key, value] of numericPoints.entries()) {
-    if (!value) {
-      continue;
-    }
+    if (value == null) continue;
     influxPoint.floatField(key, value);
   }
 

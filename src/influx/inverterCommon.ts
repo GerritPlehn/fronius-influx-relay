@@ -10,23 +10,25 @@ export const writeInverterCommon = async (rawData: unknown) => {
 
   const numericPoints = new Map<string, number | null>();
 
-  numericPoints.set("FAC", invertercommon.FAC?.Value ?? null);
-  numericPoints.set("IAC", invertercommon.IAC.Value);
-  numericPoints.set("IDC", invertercommon.IDC.Value);
-  numericPoints.set("IDC_2", invertercommon.IDC_2.Value);
   numericPoints.set("PAC", invertercommon.PAC.Value);
   numericPoints.set("SAC", invertercommon.SAC.Value);
-  numericPoints.set("TOTAL_ENERGY", invertercommon.TOTAL_ENERGY.Value);
+  numericPoints.set("IAC", invertercommon.IAC.Value);
   numericPoints.set("UAC", invertercommon.UAC.Value);
+  numericPoints.set("FAC", invertercommon.FAC?.Value ?? null);
+  numericPoints.set("IDC", invertercommon.IDC.Value);
+  numericPoints.set("IDC_2", invertercommon.IDC_2.Value);
+  numericPoints.set("IDC_3", invertercommon.IDC_3.Value);
+  numericPoints.set("IDC_4", invertercommon.IDC_4.Value);
   numericPoints.set("UDC", invertercommon.UDC.Value);
   numericPoints.set("UDC_2", invertercommon.UDC_2.Value);
+  numericPoints.set("UDC_3", invertercommon.UDC_3.Value);
+  numericPoints.set("UDC_4", invertercommon.UDC_4.Value);
+  numericPoints.set("TOTAL_ENERGY", invertercommon.TOTAL_ENERGY.Value);
 
   const influxPoint = new Point("InverterCommon").timestamp(measurementTime);
 
   for (const [key, value] of numericPoints.entries()) {
-    if (!value) {
-      continue;
-    }
+    if (value == null) continue;
     influxPoint.floatField(key, value);
   }
 
