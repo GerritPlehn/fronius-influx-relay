@@ -10,8 +10,8 @@ export const writeInverterCumulation = async (rawData: unknown) => {
 
   const numericPoints = new Map<string, number | null>();
 
-  numericPoints.set("PAC", invertercumulation.PAC.Values[1]);
-  numericPoints.set("TOTAL_ENERGY", invertercumulation.TOTAL_ENERGY.Values[1]);
+  numericPoints.set("PAC", invertercumulation.PAC.Value);
+  numericPoints.set("TOTAL_ENERGY", invertercumulation.TOTAL_ENERGY.Value);
 
   const influxPoint = new Point("InverterCumulation").timestamp(
     measurementTime

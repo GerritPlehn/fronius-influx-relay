@@ -5,16 +5,21 @@ export const inverterCumulationSchema = z.object({
     Data: z.object({
       DAY_ENERGY: z.object({
         Unit: z.string(),
-        Values: z.object({ 1: z.null() }),
+        Value: z.number().nullable(),
       }),
-      PAC: z.object({ Unit: z.string(), Values: z.object({ 1: z.number() }) }),
+      DeviceStatus: z.object({
+        ErrorCode: z.number(),
+        InverterState: z.string(),
+        StatusCode: z.number(),
+      }),
+      PAC: z.object({ Unit: z.string(), Value: z.number().nullable() }),
       TOTAL_ENERGY: z.object({
         Unit: z.string(),
-        Values: z.object({ 1: z.number() }),
+        Value: z.number(),
       }),
       YEAR_ENERGY: z.object({
         Unit: z.string(),
-        Values: z.object({ 1: z.null() }),
+        Value: z.number().nullable(),
       }),
     }),
   }),
