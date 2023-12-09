@@ -5,7 +5,7 @@ import { meterSchema } from "../types/Meter.ts";
 export const writeMeter = async (rawData: unknown) => {
   const data = meterSchema.parse(rawData);
 
-  const meter = data.Body.Data[0];
+  const meter = data.Body.Data;
   const measurementTime = data.Head.Timestamp;
 
   const numericPoints = new Map<string, number | null>();
