@@ -5,6 +5,7 @@ const envShape = z.object({
   INFLUX_TOKEN: z.string().min(1),
   INFLUX_ORG: z.string().default("default"),
   INFLUX_BUCKET: z.string().default("fronius"),
+  RELAY_PORT: z.coerce.number().default(3000),
 });
 
 const env = envShape.parse(process.env);
