@@ -1,8 +1,10 @@
 import { Point } from "@influxdata/influxdb-client";
 import { writeApi } from "./index.ts";
-import type { InverterCommon } from "../types/InverterCommon.ts";
+import { inverterCommonSchema } from "../types/InverterCommon.ts";
 
-export const writeInverterCommon = async (data: InverterCommon) => {
+export const writeInverterCommon = async (rawData: unknown) => {
+  const data = inverterCommonSchema.parse(rawData);
+
   const invertercommon = data.Body.Data;
   const measurementTime = data.Head.Timestamp;
 

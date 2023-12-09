@@ -1,8 +1,10 @@
 import { Point } from "@influxdata/influxdb-client";
 import { writeApi } from "./index.ts";
-import type { Storage } from "../types/Storage.ts";
+import { storageSchema } from "../types/Storage.ts";
 
-export const writeStorage = async (data: Storage) => {
+export const writeStorage = async (rawData: unknown) => {
+  const data = storageSchema.parse(rawData);
+
   const storage = data.Body.Data.Controller;
   const measurementTime = data.Head.Timestamp;
 

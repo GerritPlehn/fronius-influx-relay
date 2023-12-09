@@ -1,8 +1,10 @@
 import { Point } from "@influxdata/influxdb-client";
 import { writeApi } from "./index.ts";
-import type { PowerFlow } from "../types/PowerFlow.ts";
+import { powerFlowSchema } from "../types/PowerFlow";
 
-export const writePowerFlow = async (data: PowerFlow) => {
+export const writePowerFlow = async (rawData: unknown) => {
+  const data = powerFlowSchema.parse(rawData);
+
   const inverter = data.Body.Data.Inverters[1];
   const site = data.Body.Data.Site;
   const measurementTime = data.Head.Timestamp;

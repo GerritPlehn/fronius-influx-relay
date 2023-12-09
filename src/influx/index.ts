@@ -1,7 +1,6 @@
 import { InfluxDB, HttpError } from "@influxdata/influxdb-client";
 
 import { influx } from "../env.ts";
-import { hostname } from "node:os";
 
 const { url, token, org, bucket } = influx;
 

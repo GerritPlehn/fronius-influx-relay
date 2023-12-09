@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const MeterSchema = z.object({
+export const meterSchema = z.object({
   Body: z.object({
     Data: z.object({
       0: z.object({
@@ -60,4 +60,4 @@ export const MeterSchema = z.object({
   }),
 });
 
-export type Meter = z.infer<typeof MeterSchema>;
+export type Meter = z.infer<typeof meterSchema>;

@@ -1,8 +1,10 @@
 import { Point } from "@influxdata/influxdb-client";
 import { writeApi } from "./index.ts";
-import type { Meter } from "../types/Meter.ts";
+import { meterSchema } from "../types/Meter.ts";
 
-export const writeMeter = async (data: Meter) => {
+export const writeMeter = async (rawData: unknown) => {
+  const data = meterSchema.parse(rawData);
+
   const meter = data.Body.Data[0];
   const measurementTime = data.Head.Timestamp;
 

@@ -1,8 +1,10 @@
 import { Point } from "@influxdata/influxdb-client";
 import { writeApi } from "./index.ts";
-import type { InverterCumulation } from "../types/InverterCumulation.ts";
+import { inverterCumulationSchema } from "../types/InverterCumulation.ts";
 
-export const writeInverterCumulation = async (data: InverterCumulation) => {
+export const writeInverterCumulation = async (rawData: unknown) => {
+  const data = inverterCumulationSchema.parse(rawData);
+
   const invertercumulation = data.Body.Data;
   const measurementTime = data.Head.Timestamp;
 
