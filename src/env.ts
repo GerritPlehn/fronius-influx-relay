@@ -1,17 +1,19 @@
 import { z } from "zod";
 
 const envShape = z.object({
-  url: z.string(),
-  token: z.string(),
-  org: z.string(),
-  bucket: z.string(),
+  INFLUX_URL: z.string().min(1),
+  INFLUX_TOKEN: z.string().min(1),
+  INFLUX_ORG: z.string().default("default"),
+  INFLUX_BUCKET: z.string().default("fronius"),
 });
 
-const env = envShape.parse({
-  url: process.env.URL,
-  token: process.env.TOKEN,
-  org: process.env.ORG,
-  bucket: process.env.BUCKET,
-});
+const env = envShape.parse(process.env);
+
+export const influx = {
+  url: env.INFLUX_URL,
+  token: env.INFLUX_TOKEN,
+  org: env.INFLUX_ORG,
+  bucket: env.INFLUX_BUCKET,
+};
 
 export { env };

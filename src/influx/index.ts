@@ -1,9 +1,9 @@
 import { InfluxDB, HttpError } from "@influxdata/influxdb-client";
 
-import { env } from "../env.ts";
+import { influx } from "../env.ts";
 import { hostname } from "node:os";
 
-const { url, token, org, bucket } = env;
+const { url, token, org, bucket } = influx;
 
 // create a write API, expecting point timestamps in nanoseconds (can be also 's', 'ms', 'us')
 export const writeApi = new InfluxDB({ url, token }).getWriteApi(
