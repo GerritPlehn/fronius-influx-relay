@@ -7,6 +7,10 @@ const envShape = z.object({
   INFLUX_BUCKET: z.string().default("fronius"),
   RELAY_PORT: z.coerce.number().default(3000),
   INVERTER_URL: z.string(),
+  CRAWL: z
+    .enum(["true", "false"])
+    .default("false")
+    .transform((boolstring) => boolstring === "true"),
 });
 
 const env = envShape.parse(process.env);
