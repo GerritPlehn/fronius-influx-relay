@@ -3,7 +3,13 @@ import { writeApi } from "./index.ts";
 import { meterSchema } from "../types/Meter.ts";
 
 export const writeMeter = async (rawData: unknown) => {
-  const data = meterSchema.parse(rawData);
+  const input = meterSchema.safeParse(rawData);
+
+  if (!input.success) {
+    console.warn("got unexpected data", input.error);
+    return;
+  }
+  const { data } = input;
 
   const meter = data.Body.Data;
   const measurementTime = data.Head.Timestamp;

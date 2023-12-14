@@ -3,7 +3,13 @@ import { writeApi } from "./index.ts";
 import { powerFlowSchema } from "../types/PowerFlow";
 
 export const writePowerFlow = async (rawData: unknown) => {
-  const data = powerFlowSchema.parse(rawData);
+  const input = powerFlowSchema.safeParse(rawData);
+
+  if (!input.success) {
+    console.warn("got unexpected data", input.error);
+    return;
+  }
+  const { data } = input;
 
   const inverter = data.Body.Data.Inverters[1];
   const site = data.Body.Data.Site;

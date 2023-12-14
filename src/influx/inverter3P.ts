@@ -3,7 +3,13 @@ import { writeApi } from "./index.ts";
 import { inverter3PSchema } from "../types/Inverter3P.ts";
 
 export const writeInverter3P = async (rawData: unknown) => {
-  const data = inverter3PSchema.parse(rawData);
+  const input = inverter3PSchema.safeParse(rawData);
+
+  if (!input.success) {
+    console.warn("got unexpected data", input.error);
+    return;
+  }
+  const { data } = input;
 
   const inverter3p = data.Body.Data;
   const measurementTime = data.Head.Timestamp;

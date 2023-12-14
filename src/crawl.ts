@@ -81,7 +81,7 @@ export const crawlFronius = async () => {
     try {
       await crawlEndpoint(endpoint);
     } catch (error) {
-      console.log(error);
+      console.error("Error while fetching endpoint", error);
     }
   }
 };

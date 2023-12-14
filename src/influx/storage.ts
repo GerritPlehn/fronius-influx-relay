@@ -3,7 +3,13 @@ import { writeApi } from "./index.ts";
 import { storageSchema } from "../types/Storage.ts";
 
 export const writeStorage = async (rawData: unknown) => {
-  const data = storageSchema.parse(rawData);
+  const input = storageSchema.safeParse(rawData);
+
+  if (!input.success) {
+    console.warn("got unexpected data", input.error);
+    return;
+  }
+  const { data } = input;
 
   const storage = data.Body.Data.Controller;
   if (!storage) {

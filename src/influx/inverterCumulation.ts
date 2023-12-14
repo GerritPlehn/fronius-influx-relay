@@ -3,7 +3,13 @@ import { writeApi } from "./index.ts";
 import { inverterCumulationSchema } from "../types/InverterCumulation.ts";
 
 export const writeInverterCumulation = async (rawData: unknown) => {
-  const data = inverterCumulationSchema.parse(rawData);
+  const input = inverterCumulationSchema.safeParse(rawData);
+
+  if (!input.success) {
+    console.warn("got unexpected data", input.error);
+    return;
+  }
+  const { data } = input;
 
   const invertercumulation = data.Body.Data;
   const measurementTime = data.Head.Timestamp;

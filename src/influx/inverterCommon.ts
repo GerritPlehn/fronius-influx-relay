@@ -3,7 +3,13 @@ import { writeApi } from "./index.ts";
 import { inverterCommonSchema } from "../types/InverterCommon.ts";
 
 export const writeInverterCommon = async (rawData: unknown) => {
-  const data = inverterCommonSchema.parse(rawData);
+  const input = inverterCommonSchema.safeParse(rawData);
+
+  if (!input.success) {
+    console.warn("got unexpected data", input.error);
+    return;
+  }
+  const { data } = input;
 
   const invertercommon = data.Body.Data;
   const measurementTime = data.Head.Timestamp;
