@@ -24,9 +24,7 @@ export const crawlEndpoint = async (endpoint: Endpoint) => {
 	});
 	const body = await inverterResponse.json();
 	const lineProtocol = await endpoint.writer(body);
-	console.log(
-		`${new Date().toISOString()}: [${endpoint.name}] ${lineProtocol}`,
-	);
+	console.log(`${new Date().toISOString()}: ${lineProtocol}`);
 };
 
 export const crawlFronius = async () => {
