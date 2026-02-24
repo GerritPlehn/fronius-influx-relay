@@ -40,6 +40,7 @@ export const crawlFronius = async () => {
 	}
 	try {
 		await writeApi.flush();
+		console.log(`${new Date().toISOString()}: Successfully flushed to Influx`);
 	} catch (error) {
 		console.error(
 			`${new Date().toISOString()}: Error while flushing writes to Influx`,
