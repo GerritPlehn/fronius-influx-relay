@@ -1,4 +1,3 @@
-import { env } from "./env";
 import { writeApi } from "./influx";
 import { inverter3PEndpoint } from "./influx/inverter3P";
 import { inverterCommonEndpoint } from "./influx/inverterCommon";
@@ -6,8 +5,6 @@ import { inverterCumulationEndpoint } from "./influx/inverterCumulation";
 import { meterEndpoint } from "./influx/meter";
 import { powerFlowEndpoint } from "./influx/powerFlow";
 import { storageEndpoint } from "./influx/storage";
-
-export const baseUrl = `${env.INVERTER_URL}/solar_api/v1`;
 
 type Writer = (data: unknown) => Promise<string | undefined>;
 export type Endpoint = { url: string; writer: Writer; name: string };

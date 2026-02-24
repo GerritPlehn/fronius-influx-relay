@@ -1,5 +1,6 @@
 import { Point } from "@influxdata/influxdb-client";
-import { baseUrl, type Endpoint } from "../crawl.ts";
+import type { Endpoint } from "../crawl.ts";
+import { fronius } from "../env.ts";
 import { storageSchema } from "../types/Storage.ts";
 import { writeApi } from "./index.ts";
 
@@ -47,7 +48,7 @@ export const writeStorage = async (rawData: unknown) => {
 };
 
 export const storageEndpoint: Endpoint = {
-	url: `${baseUrl}/GetStorageRealtimeData.cgi?${new URLSearchParams({
+	url: `${fronius.baseUrl}/GetStorageRealtimeData.cgi?${new URLSearchParams({
 		Scope: "Device",
 		DeviceId: "0",
 	})}`,

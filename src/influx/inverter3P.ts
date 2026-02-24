@@ -1,5 +1,6 @@
 import { Point } from "@influxdata/influxdb-client";
-import { baseUrl, type Endpoint } from "../crawl.ts";
+import type { Endpoint } from "../crawl.ts";
+import { fronius } from "../env.ts";
 import { inverter3PSchema } from "../types/Inverter3P.ts";
 import { writeApi } from "./index.ts";
 
@@ -39,7 +40,7 @@ export const writeInverter3P = async (rawData: unknown) => {
 };
 
 export const inverter3PEndpoint: Endpoint = {
-	url: `${baseUrl}/GetInverterRealtimeData.cgi?${new URLSearchParams({
+	url: `${fronius.baseUrl}/GetInverterRealtimeData.cgi?${new URLSearchParams({
 		Scope: "Device",
 		DataCollection: "3PInverterData",
 	})}`,

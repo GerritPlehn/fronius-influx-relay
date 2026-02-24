@@ -1,5 +1,6 @@
 import { Point } from "@influxdata/influxdb-client";
-import { baseUrl, type Endpoint } from "../crawl.ts";
+import type { Endpoint } from "../crawl.ts";
+import { fronius } from "../env.ts";
 import { powerFlowSchema } from "../types/PowerFlow";
 import { writeApi } from "./index.ts";
 
@@ -46,7 +47,7 @@ export const writePowerFlow = async (rawData: unknown) => {
 };
 
 export const powerFlowEndpoint: Endpoint = {
-	url: `${baseUrl}/GetPowerFlowRealtimeData.fcgi`,
+	url: `${fronius.baseUrl}/GetPowerFlowRealtimeData.fcgi`,
 	writer: writePowerFlow,
 	name: "PowerFlow",
 };

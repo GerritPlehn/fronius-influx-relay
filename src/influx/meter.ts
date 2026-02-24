@@ -1,5 +1,6 @@
 import { Point } from "@influxdata/influxdb-client";
-import { baseUrl, type Endpoint } from "../crawl.ts";
+import type { Endpoint } from "../crawl.ts";
+import { fronius } from "../env.ts";
 import { meterSchema } from "../types/Meter.ts";
 import { writeApi } from "./index.ts";
 
@@ -93,7 +94,7 @@ export const writeMeter = async (rawData: unknown) => {
 };
 
 export const meterEndpoint: Endpoint = {
-	url: `${baseUrl}/GetMeterRealtimeData.cgi?${new URLSearchParams({
+	url: `${fronius.baseUrl}/GetMeterRealtimeData.cgi?${new URLSearchParams({
 		Scope: "Device",
 		DeviceId: "0",
 	})}`,

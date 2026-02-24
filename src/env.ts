@@ -19,4 +19,8 @@ export const influx = {
 	bucket: env.INFLUX_BUCKET,
 };
 
+export const fronius = {
+	baseUrl: `${env.INVERTER_URL}/solar_api/v1`,
+};
+
 export { env };
