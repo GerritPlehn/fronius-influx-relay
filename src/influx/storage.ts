@@ -1,4 +1,5 @@
 import { Point } from "@influxdata/influxdb-client";
+import { baseUrl, type Endpoint } from "../crawl.ts";
 import { storageSchema } from "../types/Storage.ts";
 import { writeApi } from "./index.ts";
 
@@ -6,14 +7,17 @@ export const writeStorage = async (rawData: unknown) => {
 	const input = storageSchema.safeParse(rawData);
 
 	if (!input.success) {
-		console.warn("got unexpected data", input.error);
+		console.warn(
+			`${new Date().toISOString()}: got unexpected data`,
+			input.error,
+		);
 		return;
 	}
 	const { data } = input;
 
 	const storage = data.Body.Data.Controller;
 	if (!storage) {
-		console.warn("No Storage data available");
+		console.warn(`${new Date().toISOString()}: No Storage data available`);
 		return;
 	}
 	const measurementTime = data.Head.Timestamp;
@@ -39,5 +43,14 @@ export const writeStorage = async (rawData: unknown) => {
 	influxPoint.stringField("Status_BatteryCell", storage.Status_BatteryCell);
 
 	writeApi.writePoint(influxPoint);
-	console.log(`${influxPoint.toLineProtocol(writeApi)}`);
+	return influxPoint.toLineProtocol(writeApi);
+};
+
+export const storageEndpoint: Endpoint = {
+	url: `${baseUrl}/GetStorageRealtimeData.cgi?${new URLSearchParams({
+		Scope: "Device",
+		DeviceId: "0",
+	})}`,
+	writer: writeStorage,
+	name: "Storage",
 };

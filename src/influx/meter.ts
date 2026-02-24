@@ -1,4 +1,5 @@
 import { Point } from "@influxdata/influxdb-client";
+import { baseUrl, type Endpoint } from "../crawl.ts";
 import { meterSchema } from "../types/Meter.ts";
 import { writeApi } from "./index.ts";
 
@@ -6,7 +7,10 @@ export const writeMeter = async (rawData: unknown) => {
 	const input = meterSchema.safeParse(rawData);
 
 	if (!input.success) {
-		console.warn("got unexpected data", input.error);
+		console.warn(
+			`${new Date().toISOString()}: got unexpected data`,
+			input.error,
+		);
 		return;
 	}
 	const { data } = input;
@@ -85,5 +89,14 @@ export const writeMeter = async (rawData: unknown) => {
 	}
 
 	writeApi.writePoint(influxPoint);
-	console.log(`${influxPoint.toLineProtocol(writeApi)}`);
+	return influxPoint.toLineProtocol(writeApi);
+};
+
+export const meterEndpoint: Endpoint = {
+	url: `${baseUrl}/GetMeterRealtimeData.cgi?${new URLSearchParams({
+		Scope: "Device",
+		DeviceId: "0",
+	})}`,
+	writer: writeMeter,
+	name: "Meter",
 };

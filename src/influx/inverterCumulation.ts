@@ -1,4 +1,5 @@
 import { Point } from "@influxdata/influxdb-client";
+import { baseUrl, type Endpoint } from "../crawl.ts";
 import { inverterCumulationSchema } from "../types/InverterCumulation.ts";
 import { writeApi } from "./index.ts";
 
@@ -6,7 +7,10 @@ export const writeInverterCumulation = async (rawData: unknown) => {
 	const input = inverterCumulationSchema.safeParse(rawData);
 
 	if (!input.success) {
-		console.warn("got unexpected data", input.error);
+		console.warn(
+			`${new Date().toISOString()}: got unexpected data`,
+			input.error,
+		);
 		return;
 	}
 	const { data } = input;
@@ -29,5 +33,14 @@ export const writeInverterCumulation = async (rawData: unknown) => {
 	}
 
 	writeApi.writePoint(influxPoint);
-	console.log(`${influxPoint.toLineProtocol(writeApi)}`);
+	return influxPoint.toLineProtocol(writeApi);
+};
+
+export const inverterCumulationEndpoint: Endpoint = {
+	url: `${baseUrl}/GetInverterRealtimeData.cgi?${new URLSearchParams({
+		Scope: "Device",
+		DataCollection: "CumulationInverterData",
+	})}`,
+	writer: writeInverterCumulation,
+	name: "InverterCumulative",
 };

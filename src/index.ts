@@ -17,7 +17,9 @@ const app = new Elysia()
 	.post("/inverterCumulation", ({ body }) => writeInverterCumulation(body))
 	.listen(env.RELAY_PORT);
 
-console.log(`Proxy is running at ${app.server?.hostname}:${app.server?.port}`);
+console.log(
+	`${new Date().toISOString()}: Proxy is running at ${app.server?.hostname}:${app.server?.port}`,
+);
 
 const crawlJob = new CronJob(
 	"0 * * * * *", // cronTime
@@ -27,7 +29,7 @@ const crawlJob = new CronJob(
 const gracefulShutdown = async () => {
 	await app.stop();
 	await close();
-	console.log("closed connections");
+	console.log(`${new Date().toISOString()}: closed connections`);
 	process.exit();
 };
 
@@ -36,6 +38,8 @@ process.on("SIGTERM", gracefulShutdown);
 process.on("SIGINT", gracefulShutdown);
 
 if (env.CRAWL) {
-	console.log(`started crawl schedule ${crawlJob.cronTime.toString()}`);
+	console.log(
+		`${new Date().toISOString()}: started crawl schedule ${crawlJob.cronTime.toString()}`,
+	);
 	crawlJob.start();
 }

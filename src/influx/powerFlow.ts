@@ -1,4 +1,5 @@
 import { Point } from "@influxdata/influxdb-client";
+import { baseUrl, type Endpoint } from "../crawl.ts";
 import { powerFlowSchema } from "../types/PowerFlow";
 import { writeApi } from "./index.ts";
 
@@ -6,7 +7,10 @@ export const writePowerFlow = async (rawData: unknown) => {
 	const input = powerFlowSchema.safeParse(rawData);
 
 	if (!input.success) {
-		console.warn("got unexpected data", input.error);
+		console.warn(
+			`${new Date().toISOString()}: got unexpected data`,
+			input.error,
+		);
 		return;
 	}
 	const { data } = input;
@@ -38,5 +42,11 @@ export const writePowerFlow = async (rawData: unknown) => {
 	}
 
 	writeApi.writePoint(influxPoint);
-	console.log(`${influxPoint.toLineProtocol(writeApi)}`);
+	return influxPoint.toLineProtocol(writeApi);
+};
+
+export const powerFlowEndpoint: Endpoint = {
+	url: `${baseUrl}/GetPowerFlowRealtimeData.fcgi`,
+	writer: writePowerFlow,
+	name: "PowerFlow",
 };

@@ -1,4 +1,5 @@
 import { Point } from "@influxdata/influxdb-client";
+import { baseUrl, type Endpoint } from "../crawl.ts";
 import { inverterCommonSchema } from "../types/InverterCommon.ts";
 import { writeApi } from "./index.ts";
 
@@ -6,7 +7,10 @@ export const writeInverterCommon = async (rawData: unknown) => {
 	const input = inverterCommonSchema.safeParse(rawData);
 
 	if (!input.success) {
-		console.warn("got unexpected data", input.error);
+		console.warn(
+			`${new Date().toISOString()}: got unexpected data`,
+			input.error,
+		);
 		return;
 	}
 	const { data } = input;
@@ -39,5 +43,14 @@ export const writeInverterCommon = async (rawData: unknown) => {
 	}
 
 	writeApi.writePoint(influxPoint);
-	console.log(`${influxPoint.toLineProtocol(writeApi)}`);
+	return influxPoint.toLineProtocol(writeApi);
+};
+
+export const inverterCommonEndpoint: Endpoint = {
+	url: `${baseUrl}/GetInverterRealtimeData.cgi?${new URLSearchParams({
+		Scope: "Device",
+		DataCollection: "CommonInverterData",
+	})}`,
+	writer: writeInverterCommon,
+	name: "InverterCommon",
 };

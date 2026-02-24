@@ -1,4 +1,4 @@
-import { HttpError, InfluxDB } from "@influxdata/influxdb-client";
+import { InfluxDB } from "@influxdata/influxdb-client";
 
 import { influx } from "../env.ts";
 
@@ -21,12 +21,11 @@ export const close = async () => {
 	// close() flushes the remaining buffered data and then cancels pending retries.
 	try {
 		await writeApi.close();
-		console.log("Closed influx connection");
+		console.log(`${new Date().toISOString()}: Closed influx connection`);
 	} catch (e) {
-		console.error(e);
-		if (e instanceof HttpError && e.statusCode === 401) {
-			console.log("Run ./onboarding.js to setup a new InfluxDB database.");
-		}
-		console.log("\nFinished ERROR");
+		console.error(
+			`${new Date().toISOString()}: Error while closing connection`,
+			e,
+		);
 	}
 };
